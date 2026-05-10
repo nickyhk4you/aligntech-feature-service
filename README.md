@@ -1,6 +1,6 @@
 # AlignTech Feature Management Service
 
-Feature flag service for an e-commerce platform. Lets you toggle features across web, backend and mobile apps without redeploying.
+Feature flag service for an e-commerce platform. Lets you toggle features across web, backend without redeploying.
 
 
 
