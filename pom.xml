@@ -20,6 +20,7 @@
 
     <modules>
         <module>service</module>
+        <module>sdk/java</module>
     </modules>
 
     <properties>
