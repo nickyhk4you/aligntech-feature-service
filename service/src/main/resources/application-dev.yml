@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/feature_service
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+
+logging:
+  level:
+    com.aligntech: DEBUG
+    org.springframework.cache: TRACE
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
