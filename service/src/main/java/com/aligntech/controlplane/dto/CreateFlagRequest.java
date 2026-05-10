@@ -27,6 +27,9 @@ public class CreateFlagRequest {
     @Size(max = 2000)
     private String description;
 
+    @Size(max = 20)
+    private String status;
+
     @Builder.Default
     private String flagType = "boolean";
 

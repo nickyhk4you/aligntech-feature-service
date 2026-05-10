@@ -13,7 +13,7 @@ import java.util.Map;
 @Slf4j
 public class RuleEvaluator {
 
-//    @Cacheable(value = "flagEvaluations", key = "#flag.flagKey + ':' + #context.userId")
+    @Cacheable(value = "flagEvaluations", key = "#flag.flagKey + ':' + #context.userId")
     public EvaluationResult evaluate(FeatureFlag flag, EvaluationContext context) {
         EvaluationResult.EvaluationResultBuilder base = EvaluationResult.builder()
                 .flagKey(flag.getFlagKey())

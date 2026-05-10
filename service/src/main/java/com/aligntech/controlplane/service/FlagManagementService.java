@@ -40,7 +40,7 @@ public class FlagManagementService {
                 .name(request.getName())
                 .description(request.getDescription())
                 .flagType(request.getFlagType())
-                .status("draft")
+                .status(request.getStatus())
                 .environments(request.getEnvironments())
                 .createdBy(request.getCreatedBy())
                 .releaseVersion(request.getReleaseVersion())
