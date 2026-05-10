@@ -12,21 +12,6 @@ Feature flag service for an e-commerce platform. Lets you toggle features across
 - Flyway (schema migration)
 
 
-## Getting Started
-
-```bash
-# create db
-psql postgres -c "CREATE USER aligntech WITH PASSWORD 'aligntech' CREATEDB;"
-psql postgres -c "CREATE DATABASE feature_service OWNER aligntech;"
-
-# start redis
-brew services start redis
-
-# run
-cd service && mvn spring-boot:run
-```
-
-
 ## APIs
 
 ### Management (`/api/v1/admin`)
