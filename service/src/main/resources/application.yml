@@ -34,6 +34,9 @@ spring:
     serialization:
       write-dates-as-timestamps: false
 
+app:
+  api-key: ${API_KEY:}
+
 server:
   port: 8080
 
