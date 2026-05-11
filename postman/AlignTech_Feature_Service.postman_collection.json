@@ -1,0 +1,361 @@
+{
+	"info": {
+		"name": "AlignTech Feature Service",
+		"description": "Feature flag management and evaluation service API collection.\n\nDistributed tracing: all responses include `X-Trace-Id` and `traceparent` headers for end-to-end debugging.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "flagId",
+			"value": "",
+			"type": "string",
+			"description": "Set automatically after creating a flag via the test script"
+		},
+		{
+			"key": "apiKey",
+			"value": "dev-secret-key",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Health",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/health",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"health"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin (Control Plane)",
+			"item": [
+				{
+					"name": "Flags",
+					"item": [
+						{
+							"name": "Create Flag",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-API-Key",
+										"value": "{{apiKey}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"flagKey\": \"ai-search\",\n  \"name\": \"AI-Powered Product Search\",\n  \"description\": \"Enables semantic vector search with personalized product ranking. Currently in closed beta, targeting VIP customers and internal staff before general availability.\",\n  \"flagType\": \"boolean\",\n  \"status\": \"active\",\n  \"environments\": [\"development\", \"staging\", \"production\"],\n  \"createdBy\": \"search-team\",\n  \"releaseVersion\": \"3.2.0\",\n  \"rollout\": {\n    \"type\": \"whitelist\",\n    \"userIds\": [\"user_001\", \"user_002\", \"vip-*\", \"staff-*\"]\n  }\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/admin/flags",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"flags"
+									]
+								}
+							}
+						},
+						{
+							"name": "List Flags",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "{{apiKey}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/admin/flags?status=active&page=0&size=50",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"flags"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "active",
+											"description": "Filter: active, archived, or omit for all"
+										},
+										{
+											"key": "page",
+											"value": "0",
+											"description": "Zero-based page index"
+										},
+										{
+											"key": "size",
+											"value": "50",
+											"description": "Page size"
+										}
+									]
+								}
+							}
+						},
+						{
+							"name": "Get Flag by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "{{apiKey}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/admin/flags/{{flagId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"flags",
+										"{{flagId}}"
+									]
+								}
+							}
+						},
+						{
+							"name": "Activate Flag",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "{{apiKey}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/admin/flags/{{flagId}}/activate?activatedBy=admin",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"flags",
+										"{{flagId}}",
+										"activate"
+									],
+									"query": [
+										{
+											"key": "activatedBy",
+											"value": "admin",
+											"description": "Who is activating the flag"
+										}
+									]
+								}
+							}
+						},
+						{
+							"name": "Archive Flag",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "{{apiKey}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/admin/flags/{{flagId}}?archivedBy=admin",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"flags",
+										"{{flagId}}"
+									],
+									"query": [
+										{
+											"key": "archivedBy",
+											"value": "admin",
+											"description": "Who is archiving the flag"
+										}
+									]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Audit",
+					"item": [
+						{
+							"name": "Get Flag Audit History",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-API-Key",
+										"value": "{{apiKey}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/admin/audit/flags/{{flagId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"audit",
+										"flags",
+										"{{flagId}}"
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Data Plane",
+			"item": [
+				{
+					"name": "Evaluate Flags",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"context\": {\n    \"userId\": \"user_001\",\n    \"tenantId\": \"tenant_acme\",\n    \"region\": \"us-east-1\",\n    \"appVersion\": \"3.2.0\",\n    \"platform\": \"ios\",\n    \"appKey\": \"aligntech-mobile\",\n    \"customAttributes\": {\n      \"betaTester\": true,\n      \"customerTier\": \"enterprise\"\n    }\n  },\n  \"flagKeys\": [\"ai-search\"],\n  \"includePayload\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/evaluate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"evaluate"
+							]
+						}
+					}
+				},
+				{
+					"name": "Evaluate All Active Flags",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"context\": {\n    \"userId\": \"guest_999\",\n    \"tenantId\": \"tenant_acme\",\n    \"region\": \"eu-west-1\",\n    \"appVersion\": \"3.1.5\",\n    \"platform\": \"web\",\n    \"appKey\": \"aligntech-web\",\n    \"customAttributes\": {\n      \"customerTier\": \"free\"\n    }\n  },\n  \"includePayload\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/evaluate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"evaluate"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Snapshot",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/snapshot",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"snapshot"
+							]
+						}
+					}
+				},
+				{
+					"name": "SSE Stream",
+					"description": "Server-Sent Events stream for live flag change notifications. Requires app to be running. Connect to receive real-time updates when flags are created/activated/archived.",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/event-stream"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/stream",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"stream"
+							]
+						}
+					}
+				}
+			]
+		}
+	]
+}
