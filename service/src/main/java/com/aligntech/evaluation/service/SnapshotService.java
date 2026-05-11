@@ -1,6 +1,6 @@
-package com.aligntech.dataplane.service;
+package com.aligntech.evaluation.service;
 
-import com.aligntech.dataplane.dto.SnapshotResponse;
+import com.aligntech.evaluation.dto.SnapshotResponse;
 import com.aligntech.domain.FeatureFlag;
 import com.aligntech.repository.FeatureFlagRepository;
 import lombok.RequiredArgsConstructor;

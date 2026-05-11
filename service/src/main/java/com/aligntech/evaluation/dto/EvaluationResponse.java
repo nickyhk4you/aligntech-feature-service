@@ -1,6 +1,6 @@
-package com.aligntech.dataplane.dto;
+package com.aligntech.evaluation.dto;
 
-import com.aligntech.dataplane.engine.EvaluationResult;
+import com.aligntech.evaluation.engine.EvaluationResult;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.aligntech.controlplane.service;
+package com.aligntech.management.service;
 
 import com.aligntech.domain.AuditLog;
 import com.aligntech.repository.AuditLogRepository;

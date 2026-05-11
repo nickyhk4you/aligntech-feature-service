@@ -1,6 +1,6 @@
-package com.aligntech.dataplane.dto;
+package com.aligntech.evaluation.dto;
 
-import com.aligntech.dataplane.engine.EvaluationContext;
+import com.aligntech.evaluation.engine.EvaluationContext;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

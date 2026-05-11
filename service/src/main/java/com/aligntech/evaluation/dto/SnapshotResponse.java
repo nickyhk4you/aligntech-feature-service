@@ -1,4 +1,4 @@
-package com.aligntech.dataplane.dto;
+package com.aligntech.evaluation.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

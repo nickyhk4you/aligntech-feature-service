@@ -1,6 +1,6 @@
-package com.aligntech.controlplane.service;
+package com.aligntech.management.service;
 
-import com.aligntech.controlplane.dto.CreateFlagRequest;
+import com.aligntech.management.dto.CreateFlagRequest;
 import com.aligntech.domain.FeatureFlag;
 import com.aligntech.event.FlagChangeEvent;
 import com.aligntech.event.FlagChangePublisher;

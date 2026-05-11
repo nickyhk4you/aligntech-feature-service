@@ -117,7 +117,7 @@
       <option name="presentableId" value="Default" />
       <updated>1778297750866</updated>
       <workItem from="1778297751994" duration="23783000" />
-      <workItem from="1778400394396" duration="9813000" />
+      <workItem from="1778400394396" duration="10121000" />
     </task>
     <servers />
   </component>
@@ -156,6 +156,11 @@
           <url>file://$PROJECT_DIR$/service/src/main/java/com/aligntech/dataplane/engine/RuleEvaluator.java</url>
           <line>17</line>
           <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/service/src/main/java/com/aligntech/config/ApiKeyAuthFilter.java</url>
+          <line>33</line>
+          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

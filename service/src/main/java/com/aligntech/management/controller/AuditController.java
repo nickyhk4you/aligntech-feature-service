@@ -1,7 +1,7 @@
-package com.aligntech.controlplane.controller;
+package com.aligntech.management.controller;
 
 import com.aligntech.domain.AuditLog;
-import com.aligntech.controlplane.service.AuditService;
+import com.aligntech.management.service.AuditService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

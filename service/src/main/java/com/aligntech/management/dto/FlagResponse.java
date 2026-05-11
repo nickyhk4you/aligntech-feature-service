@@ -1,4 +1,4 @@
-package com.aligntech.controlplane.dto;
+package com.aligntech.management.dto;
 
 import com.aligntech.domain.FeatureFlag;
 import lombok.AllArgsConstructor;

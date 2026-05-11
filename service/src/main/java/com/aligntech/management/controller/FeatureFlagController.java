@@ -1,8 +1,8 @@
-package com.aligntech.controlplane.controller;
+package com.aligntech.management.controller;
 
-import com.aligntech.controlplane.dto.*;
-import com.aligntech.controlplane.service.AuditService;
-import com.aligntech.controlplane.service.FlagManagementService;
+import com.aligntech.management.dto.*;
+import com.aligntech.management.service.AuditService;
+import com.aligntech.management.service.FlagManagementService;
 import com.aligntech.domain.FeatureFlag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

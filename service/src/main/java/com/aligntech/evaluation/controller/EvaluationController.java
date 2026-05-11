@@ -1,11 +1,11 @@
-package com.aligntech.dataplane.controller;
+package com.aligntech.evaluation.controller;
 
-import com.aligntech.dataplane.dto.EvaluationRequest;
-import com.aligntech.dataplane.dto.EvaluationResponse;
-import com.aligntech.dataplane.dto.SnapshotResponse;
-import com.aligntech.dataplane.engine.EvaluationResult;
-import com.aligntech.dataplane.service.EvaluationService;
-import com.aligntech.dataplane.service.SnapshotService;
+import com.aligntech.evaluation.dto.EvaluationRequest;
+import com.aligntech.evaluation.dto.EvaluationResponse;
+import com.aligntech.evaluation.dto.SnapshotResponse;
+import com.aligntech.evaluation.engine.EvaluationResult;
+import com.aligntech.evaluation.service.EvaluationService;
+import com.aligntech.evaluation.service.SnapshotService;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
