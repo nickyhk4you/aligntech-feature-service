@@ -4,11 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Local flag evaluator. Logic is kept identical to server-side
- * {@link com.aligntech.dataplane.engine.RuleEvaluator} so that
- * server-side and client-side evaluation always agree.
- */
+
 class Evaluator {
 
     EvaluationResult evaluate(FlagConfig flag, AlignTechUser user) {

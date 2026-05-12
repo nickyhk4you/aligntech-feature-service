@@ -3,10 +3,7 @@ package com.aligntech.sdk;
 import java.util.Collections;
 import java.util.Map;
 
-/**
- * Lightweight flag configuration used for local evaluation.
- * Deserialized from the /api/v1/snapshot response.
- */
+
 public class FlagConfig {
 
     private final String flagKey;

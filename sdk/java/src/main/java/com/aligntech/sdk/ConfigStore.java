@@ -3,9 +3,7 @@ package com.aligntech.sdk;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Thread-safe in-memory store of flag configurations.
- */
+
 class ConfigStore {
 
     private volatile Map<String, FlagConfig> flags = new ConcurrentHashMap<>();

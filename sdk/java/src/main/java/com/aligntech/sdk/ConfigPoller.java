@@ -15,10 +15,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * Background poller that fetches flag configurations from the server.
- * Polls {@code GET /api/v1/snapshot} on a fixed interval.
- */
+
 class ConfigPoller implements AutoCloseable {
 
     private final String baseUrl;
@@ -52,16 +49,12 @@ class ConfigPoller implements AutoCloseable {
         this.traceParent = traceParent;
     }
 
-    /**
-     * Synchronously fetch the initial snapshot. Blocks until data is loaded.
-     */
+
     void fetchInitial() {
         fetchSnapshot();
     }
 
-    /**
-     * Start background polling.
-     */
+
     void start() {
         if (!started.compareAndSet(false, true)) return;
         scheduler.scheduleWithFixedDelay(
