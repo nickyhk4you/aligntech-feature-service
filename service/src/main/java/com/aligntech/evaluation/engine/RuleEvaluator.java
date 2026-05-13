@@ -40,6 +40,18 @@ public class RuleEvaluator {
                         || (context.getUserId() != null && matchesAny(context.getUserId(), userIds));
             }
             case "boolean" -> Boolean.TRUE.equals(rollout.get("value"));
+            case "percentage" -> {
+                if (context.getUserId() == null) yield false;
+                int percentage = ((Number) rollout.getOrDefault("percentage", 0)).intValue();
+                int hash = Math.abs(context.getUserId().hashCode() % 100);
+                yield hash < percentage;
+            }
+            case "region" -> {
+                if (context.getRegion() == null) yield false;
+                @SuppressWarnings("unchecked")
+                List<String> regions = toStrList(rollout.get("regions"));
+                yield regions != null && regions.contains(context.getRegion());
+            }
             default -> false;
         };
 

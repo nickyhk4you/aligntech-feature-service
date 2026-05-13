@@ -53,13 +53,26 @@ public class EvaluationService {
                     }
 
                     List<EvaluationResult> results = flags.stream()
-                            .map(flag -> evaluator.evaluate(flag, context))
+                            .map(flag -> {
+                                EvaluationResult result = evaluator.evaluate(flag, context);
+                                
+                                meterRegistry.counter("evaluation.per_flag", 
+                                        "flagKey", flag.getFlagKey(),
+                                        "enabled", String.valueOf(result.isEnabled()))
+                                        .increment();
+                                
+                                return result;
+                            })
                             .toList();
 
                     long elapsed = System.nanoTime() - start;
                     meterRegistry.timer("evaluation.duration").record(elapsed, TimeUnit.NANOSECONDS);
                     meterRegistry.counter("evaluation.requests").increment();
                     meterRegistry.counter("evaluation.flags", "outcome", "evaluated").increment(results.size());
+                    
+                    long enabledCount = results.stream().filter(EvaluationResult::isEnabled).count();
+                    meterRegistry.counter("evaluation.flags", "outcome", "enabled").increment(enabledCount);
+                    meterRegistry.counter("evaluation.flags", "outcome", "disabled").increment(results.size() - enabledCount);
 
                     return results;
                 });

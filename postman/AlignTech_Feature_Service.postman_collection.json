@@ -1,8 +1,9 @@
 {
 	"info": {
 		"name": "AlignTech Feature Service",
-		"description": "Feature flag management and evaluation service API collection.\n\nDistributed tracing: all responses include `X-Trace-Id` and `traceparent` headers for end-to-end debugging.",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"description": "Feature flag management and evaluation service API collection.\n\n## Quick Start\n\n1. Set environment variables (see AlignTech_Environments.json)\n2. Run \"Create Flag\" to create a new flag\n3. Run \"Activate Flag\" to enable it\n4. Run \"Evaluate Flags\" to test evaluation\n\n## Authentication\n\nAdmin endpoints require `X-API-Key` header. Default dev key: `dev-secret-key`\n\n## Distributed Tracing\n\nAll responses include `X-Trace-Id` and `traceparent` headers for end-to-end debugging.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12345678"
 	},
 	"variable": [
 		{
@@ -14,7 +15,7 @@
 			"key": "flagId",
 			"value": "",
 			"type": "string",
-			"description": "Set automatically after creating a flag via the test script"
+			"description": "Auto-populated after creating a flag"
 		},
 		{
 			"key": "apiKey",
@@ -24,243 +25,579 @@
 	],
 	"item": [
 		{
-			"name": "Health",
+			"name": "Health & Monitoring",
 			"item": [
 				{
 					"name": "Health Check",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is OK\", function () {",
+									"    pm.expect(pm.response.text()).to.equal(\"OK\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/api/v1/health",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"health"
-							]
-						}
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "health"]
+						},
+						"description": "Simple health check endpoint"
 					}
-				}
-			]
-		},
-		{
-			"name": "Admin (Control Plane)",
-			"item": [
-				{
-					"name": "Flags",
-					"item": [
-						{
-							"name": "Create Flag",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "X-API-Key",
-										"value": "{{apiKey}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"flagKey\": \"ai-search\",\n  \"name\": \"AI-Powered Product Search\",\n  \"description\": \"Enables semantic vector search with personalized product ranking. Currently in closed beta, targeting VIP customers and internal staff before general availability.\",\n  \"flagType\": \"boolean\",\n  \"status\": \"active\",\n  \"environments\": [\"development\", \"staging\", \"production\"],\n  \"createdBy\": \"search-team\",\n  \"releaseVersion\": \"3.2.0\",\n  \"rollout\": {\n    \"type\": \"whitelist\",\n    \"userIds\": [\"user_001\", \"user_002\", \"vip-*\", \"staff-*\"]\n  }\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/api/v1/admin/flags",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"admin",
-										"flags"
-									]
-								}
-							}
-						},
-						{
-							"name": "List Flags",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-API-Key",
-										"value": "{{apiKey}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/api/v1/admin/flags?status=active&page=0&size=50",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"admin",
-										"flags"
-									],
-									"query": [
-										{
-											"key": "status",
-											"value": "active",
-											"description": "Filter: active, archived, or omit for all"
-										},
-										{
-											"key": "page",
-											"value": "0",
-											"description": "Zero-based page index"
-										},
-										{
-											"key": "size",
-											"value": "50",
-											"description": "Page size"
-										}
-									]
-								}
-							}
-						},
-						{
-							"name": "Get Flag by ID",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-API-Key",
-										"value": "{{apiKey}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/api/v1/admin/flags/{{flagId}}",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"admin",
-										"flags",
-										"{{flagId}}"
-									]
-								}
-							}
-						},
-						{
-							"name": "Activate Flag",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-API-Key",
-										"value": "{{apiKey}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/api/v1/admin/flags/{{flagId}}/activate?activatedBy=admin",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"admin",
-										"flags",
-										"{{flagId}}",
-										"activate"
-									],
-									"query": [
-										{
-											"key": "activatedBy",
-											"value": "admin",
-											"description": "Who is activating the flag"
-										}
-									]
-								}
-							}
-						},
-						{
-							"name": "Archive Flag",
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "X-API-Key",
-										"value": "{{apiKey}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/api/v1/admin/flags/{{flagId}}?archivedBy=admin",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"admin",
-										"flags",
-										"{{flagId}}"
-									],
-									"query": [
-										{
-											"key": "archivedBy",
-											"value": "admin",
-											"description": "Who is archiving the flag"
-										}
-									]
-								}
-							}
-						}
-					]
 				},
 				{
-					"name": "Audit",
-					"item": [
+					"name": "Actuator Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/actuator/health",
+							"host": ["{{baseUrl}}"],
+							"path": ["actuator", "health"]
+						},
+						"description": "Spring Boot Actuator health endpoint with detailed status"
+					}
+				},
+				{
+					"name": "Prometheus Metrics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/actuator/prometheus",
+							"host": ["{{baseUrl}}"],
+							"path": ["actuator", "prometheus"]
+						},
+						"description": "Prometheus-formatted metrics for monitoring"
+					}
+				},
+				{
+					"name": "Cache Metrics",
+					"event": [
 						{
-							"name": "Get Flag Audit History",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-API-Key",
-										"value": "{{apiKey}}",
-										"type": "text"
-									}
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Has overall metrics\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('overall');",
+									"    pm.expect(response.overall).to.have.property('overallHitRate');",
+									"});"
 								],
-								"url": {
-									"raw": "{{baseUrl}}/api/v1/admin/audit/flags/{{flagId}}",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"admin",
-										"audit",
-										"flags",
-										"{{flagId}}"
-									]
-								}
+								"type": "text/javascript"
 							}
 						}
-					]
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/metrics/cache",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "metrics", "cache"]
+						},
+						"description": "Get detailed cache metrics including hit rate, misses, evictions"
+					}
+				},
+				{
+					"name": "Cache Summary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Has cache details\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('caches');",
+									"    pm.expect(response.caches).to.be.an('array');",
+									"    pm.expect(response).to.have.property('overallHitRate');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/metrics/cache/summary",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "metrics", "cache", "summary"]
+						},
+						"description": "Get cache summary with hit rates for all caches"
+					}
 				}
-			]
+			],
+			"description": "Health check and monitoring endpoints"
 		},
 		{
-			"name": "Data Plane",
+			"name": "Admin - Flag Management",
 			"item": [
 				{
-					"name": "Evaluate Flags",
+					"name": "Create Flag - Boolean",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 201 Created\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"const response = pm.response.json();",
+									"pm.test(\"Response has id\", function () {",
+									"    pm.expect(response.id).to.be.a('string');",
+									"    pm.collectionVariables.set(\"flagId\", response.id);",
+									"});",
+									"",
+									"pm.test(\"Flag key matches\", function () {",
+									"    pm.expect(response.flagKey).to.equal(\"new-checkout-ui\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-API-Key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"flagKey\": \"new-checkout-ui\",\n  \"name\": \"New Checkout UI\",\n  \"description\": \"Redesigned checkout flow with one-click purchase\",\n  \"flagType\": \"boolean\",\n  \"status\": \"draft\",\n  \"environments\": [\"development\", \"staging\", \"production\"],\n  \"createdBy\": \"product-team\",\n  \"releaseVersion\": \"4.0.0\",\n  \"rollout\": {\n    \"type\": \"boolean\",\n    \"value\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/flags",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "flags"]
+						},
+						"description": "Create a simple boolean flag (on/off for everyone)"
+					}
+				},
+				{
+					"name": "Create Flag - Whitelist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 201 Created\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"const response = pm.response.json();",
+									"pm.collectionVariables.set(\"flagId\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-API-Key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"flagKey\": \"ai-recommendations\",\n  \"name\": \"AI Product Recommendations\",\n  \"description\": \"ML-powered product suggestions. Beta testing with VIP users.\",\n  \"flagType\": \"boolean\",\n  \"status\": \"active\",\n  \"environments\": [\"production\"],\n  \"createdBy\": \"ml-team\",\n  \"releaseVersion\": \"3.5.0\",\n  \"rollout\": {\n    \"type\": \"whitelist\",\n    \"userIds\": [\"user_vip_001\", \"user_vip_002\", \"vip-*\", \"staff-*\"]\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/flags",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "flags"]
+						},
+						"description": "Create flag with whitelist targeting (specific user IDs, supports wildcards)"
+					}
+				},
+				{
+					"name": "Create Flag - Premium Feature",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"pm.collectionVariables.set(\"flagId\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-API-Key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"flagKey\": \"premium-analytics\",\n  \"name\": \"Premium Analytics Dashboard\",\n  \"description\": \"Advanced analytics and reporting for premium subscribers\",\n  \"flagType\": \"boolean\",\n  \"status\": \"active\",\n  \"environments\": [\"production\"],\n  \"createdBy\": \"analytics-team\",\n  \"releaseVersion\": \"2.8.0\",\n  \"rollout\": {\n    \"type\": \"whitelist\",\n    \"userIds\": [\"premium-*\", \"enterprise-*\"]\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/flags",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "flags"]
+						},
+						"description": "Create flag for premium tier features"
+					}
+				},
+				{
+					"name": "List All Flags",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is array\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/flags?page=0&size=50",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "flags"],
+							"query": [
+								{
+									"key": "page",
+									"value": "0",
+									"description": "Zero-based page index"
+								},
+								{
+									"key": "size",
+									"value": "50",
+									"description": "Page size (max 100)"
+								},
+								{
+									"key": "status",
+									"value": "active",
+									"description": "Filter by status: active, draft, archived",
+									"disabled": true
+								}
+							]
+						},
+						"description": "List all feature flags with pagination"
+					}
+				},
+				{
+					"name": "List Active Flags",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/flags?status=active",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "flags"],
+							"query": [
+								{
+									"key": "status",
+									"value": "active"
+								}
+							]
+						},
+						"description": "Filter flags by active status"
+					}
+				},
+				{
+					"name": "Get Flag by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has required fields\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('id');",
+									"    pm.expect(response).to.have.property('flagKey');",
+									"    pm.expect(response).to.have.property('status');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/flags/{{flagId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "flags", "{{flagId}}"]
+						},
+						"description": "Get a single flag by UUID"
+					}
+				},
+				{
+					"name": "Activate Flag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Flag is active\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.status).to.equal('active');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/flags/{{flagId}}/activate?activatedBy=admin-user",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "flags", "{{flagId}}", "activate"],
+							"query": [
+								{
+									"key": "activatedBy",
+									"value": "admin-user",
+									"description": "Who is activating the flag"
+								}
+							]
+						},
+						"description": "Activate a flag (makes it live)"
+					}
+				},
+				{
+					"name": "Archive Flag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 204 No Content\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/flags/{{flagId}}?archivedBy=admin-user",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "flags", "{{flagId}}"],
+							"query": [
+								{
+									"key": "archivedBy",
+									"value": "admin-user",
+									"description": "Who is archiving the flag"
+								}
+							]
+						},
+						"description": "Archive a flag (soft delete)"
+					}
+				}
+			],
+			"description": "Admin endpoints for managing feature flags"
+		},
+		{
+			"name": "Admin - Audit",
+			"item": [
+				{
+					"name": "Get Flag Audit History",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is array\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-API-Key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/audit/flags/{{flagId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "admin", "audit", "flags", "{{flagId}}"]
+						},
+						"description": "Get complete audit trail for a specific flag"
+					}
+				}
+			],
+			"description": "Audit log endpoints for compliance and debugging"
+		},
+		{
+			"name": "Evaluation - Data Plane",
+			"item": [
+				{
+					"name": "Evaluate Single Flag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has results\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('results');",
+									"    pm.expect(response.results).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "traceparent",
+								"value": "00-{{$randomUUID}}-{{$randomUUID}}-01",
+								"description": "W3C Trace Context",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"context\": {\n    \"userId\": \"user_vip_001\",\n    \"tenantId\": \"tenant_acme\",\n    \"region\": \"us-east-1\",\n    \"appVersion\": \"3.5.0\",\n    \"platform\": \"web\",\n    \"appKey\": \"web-app\",\n    \"customAttributes\": {\n      \"tier\": \"premium\",\n      \"betaTester\": true\n    }\n  },\n  \"flagKeys\": [\"ai-recommendations\"],\n  \"includePayload\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/evaluate",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "evaluate"]
+						},
+						"description": "Evaluate a specific flag for a user context"
+					}
+				},
+				{
+					"name": "Evaluate Multiple Flags",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -271,19 +608,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"context\": {\n    \"userId\": \"user_001\",\n    \"tenantId\": \"tenant_acme\",\n    \"region\": \"us-east-1\",\n    \"appVersion\": \"3.2.0\",\n    \"platform\": \"ios\",\n    \"appKey\": \"aligntech-mobile\",\n    \"customAttributes\": {\n      \"betaTester\": true,\n      \"customerTier\": \"enterprise\"\n    }\n  },\n  \"flagKeys\": [\"ai-search\"],\n  \"includePayload\": true\n}"
+							"raw": "{\n  \"context\": {\n    \"userId\": \"premium-user-123\",\n    \"tenantId\": \"tenant_enterprise\",\n    \"region\": \"eu-west-1\",\n    \"appVersion\": \"2.8.0\",\n    \"platform\": \"ios\",\n    \"appKey\": \"mobile-app\",\n    \"customAttributes\": {\n      \"subscription\": \"premium\"\n    }\n  },\n  \"flagKeys\": [\"premium-analytics\", \"ai-recommendations\", \"new-checkout-ui\"],\n  \"includePayload\": true\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/v1/evaluate",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"evaluate"
-							]
-						}
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "evaluate"]
+						},
+						"description": "Evaluate multiple flags in a single request"
 					}
 				},
 				{
@@ -298,42 +630,58 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"context\": {\n    \"userId\": \"guest_999\",\n    \"tenantId\": \"tenant_acme\",\n    \"region\": \"eu-west-1\",\n    \"appVersion\": \"3.1.5\",\n    \"platform\": \"web\",\n    \"appKey\": \"aligntech-web\",\n    \"customAttributes\": {\n      \"customerTier\": \"free\"\n    }\n  },\n  \"includePayload\": true\n}"
+							"raw": "{\n  \"context\": {\n    \"userId\": \"guest_999\",\n    \"tenantId\": \"tenant_demo\",\n    \"region\": \"ap-south-1\",\n    \"appVersion\": \"1.0.0\",\n    \"platform\": \"android\",\n    \"appKey\": \"mobile-app\",\n    \"customAttributes\": {\n      \"tier\": \"free\"\n    }\n  },\n  \"includePayload\": true\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/v1/evaluate",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"evaluate"
-							]
-						}
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "evaluate"]
+						},
+						"description": "Evaluate all active flags (omit flagKeys to get all)"
 					}
 				},
 				{
-					"name": "Get Snapshot",
+					"name": "Get Snapshot (SDK Bootstrap)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Has version and flags\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('version');",
+									"    pm.expect(response).to.have.property('flags');",
+									"    pm.expect(response.flags).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "X-App-Key",
+								"value": "web-app",
+								"description": "Application key for SDK",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{baseUrl}}/api/v1/snapshot",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"snapshot"
-							]
-						}
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "snapshot"]
+						},
+						"description": "Get snapshot of all active flags (used by SDKs for initialization)"
 					}
 				},
 				{
-					"name": "SSE Stream",
-					"description": "Server-Sent Events stream for live flag change notifications. Requires app to be running. Connect to receive real-time updates when flags are created/activated/archived.",
+					"name": "SSE Stream (Real-time Updates)",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -344,18 +692,106 @@
 						],
 						"url": {
 							"raw": "{{baseUrl}}/api/v1/stream",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"stream"
-							]
-						}
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "stream"]
+						},
+						"description": "Server-Sent Events stream for real-time flag change notifications.\n\nConnect and leave open to receive events when flags are created/updated/deleted.\n\n**Note:** Postman may not display SSE properly. Use curl or a browser instead:\n\n```bash\ncurl -N -H \"Accept: text/event-stream\" http://localhost:8080/api/v1/stream\n```"
 					}
 				}
-			]
+			],
+			"description": "Evaluation endpoints for checking if flags are enabled (high-throughput data plane)"
+		},
+		{
+			"name": "Test Scenarios",
+			"item": [
+				{
+					"name": "Scenario 1: VIP User Gets AI Features",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"context\": {\n    \"userId\": \"vip-customer-456\",\n    \"region\": \"us-west-2\",\n    \"platform\": \"web\"\n  },\n  \"flagKeys\": [\"ai-recommendations\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/evaluate",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "evaluate"]
+						},
+						"description": "Test that VIP user (matching vip-* pattern) gets AI features"
+					}
+				},
+				{
+					"name": "Scenario 2: Regular User Blocked from Beta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"context\": {\n    \"userId\": \"regular-user-789\",\n    \"region\": \"eu-central-1\",\n    \"platform\": \"mobile\"\n  },\n  \"flagKeys\": [\"ai-recommendations\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/evaluate",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "evaluate"]
+						},
+						"description": "Test that regular user does NOT get beta features"
+					}
+				},
+				{
+					"name": "Scenario 3: Premium Tier Analytics",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"context\": {\n    \"userId\": \"premium-corp-001\",\n    \"region\": \"us-east-1\",\n    \"platform\": \"web\"\n  },\n  \"flagKeys\": [\"premium-analytics\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/evaluate",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "evaluate"]
+						},
+						"description": "Test premium user access to analytics dashboard"
+					}
+				}
+			],
+			"description": "Pre-configured test scenarios for common use cases"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
