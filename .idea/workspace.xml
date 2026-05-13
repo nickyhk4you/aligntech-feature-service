@@ -4,26 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fce08479-df81-4f51-a311-6c364bd9e979" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/com/aligntech/controlplane/controller/AuditController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/com/aligntech/controlplane/controller/FeatureFlagController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/com/aligntech/controlplane/dto/CreateFlagRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/com/aligntech/controlplane/dto/FlagResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/com/aligntech/controlplane/service/AuditService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/com/aligntech/controlplane/service/FlagManagementService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/com/aligntech/dataplane/controller/EvaluationController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/com/aligntech/dataplane/controller/SseController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/com/aligntech/dataplane/dto/EvaluationRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/com/aligntech/dataplane/dto/EvaluationResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/com/aligntech/dataplane/dto/SnapshotResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/com/aligntech/dataplane/engine/EvaluationContext.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/com/aligntech/dataplane/engine/EvaluationResult.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/com/aligntech/dataplane/engine/RuleEvaluator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/com/aligntech/dataplane/service/EvaluationService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/com/aligntech/dataplane/service/SnapshotService.java" beforeDir="false" />
-    </list>
+    <list default="true" id="fce08479-df81-4f51-a311-6c364bd9e979" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -83,7 +64,7 @@
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
-  <component name="RunManager" selected="Spring Boot.FeatureServiceApplication">
+  <component name="RunManager" selected="JUnit.RuleEvaluatorTest">
     <configuration name="RuleEvaluatorTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="feature-service" />
       <extension name="coverage">
@@ -115,14 +96,7 @@
   <component name="RustProjectSettings">
     <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28238.7" />
-        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-IU-252.28238.7" />
-      </set>
-    </attachedChunks>
-  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="fce08479-df81-4f51-a311-6c364bd9e979" name="Changes" comment="" />
