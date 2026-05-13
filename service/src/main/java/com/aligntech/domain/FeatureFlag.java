@@ -51,6 +51,9 @@ public class FeatureFlag {
     @Column(name = "created_by", nullable = false, length = 255)
     private String createdBy;
 
+    @Column(name = "owner_team", length = 255)
+    private String ownerTeam;
+
     @Column(name = "release_version", length = 100)
     private String releaseVersion;
 

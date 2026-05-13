@@ -1,0 +1,36 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # For Auth0
+          issuer-uri: ${JWT_ISSUER_URI:https://your-domain.auth0.com/}
+          # OR for custom OIDC provider
+          # jwk-set-uri: ${JWT_JWK_SET_URI:https://your-oidc-provider.com/.well-known/jwks.json}
+          
+          # JWT validation
+          audiences: ${JWT_AUDIENCE:https://feature-service-api}
+
+# Rate limiting configuration
+rate-limit:
+  enabled: true
+  default-limit: 500
+  admin-limit: 100
+  evaluation-limit: 1000
+  
+# Role mappings
+security:
+  roles:
+    admin: ROLE_ADMIN
+    user: ROLE_USER
+    viewer: ROLE_VIEWER
+  
+  scopes:
+    # Read flags
+    read-flags: SCOPE_read:flags
+    # Write/update flags
+    write-flags: SCOPE_write:flags
+    # Delete flags
+    delete-flags: SCOPE_delete:flags
+    # Admin access (all operations)
+    admin-flags: SCOPE_admin:flags
