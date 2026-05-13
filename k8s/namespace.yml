@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: feature-service
+  labels:
+    name: feature-service
+    environment: production

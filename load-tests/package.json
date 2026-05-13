@@ -1,0 +1,14 @@
+{
+  "name": "aligntech-feature-service-load-tests",
+  "version": "1.0.0",
+  "description": "Load tests for AlignTech Feature Service",
+  "scripts": {
+    "test:load": "k6 run --out json=results/load-test.json evaluation-load-test.js",
+    "test:stress": "k6 run --out json=results/stress-test.json stress-test.js",
+    "test:spike": "k6 run --out json=results/spike-test.json spike-test.js",
+    "test:all": "npm run test:load && npm run test:stress && npm run test:spike"
+  },
+  "keywords": ["k6", "load-testing", "performance"],
+  "author": "AlignTech",
+  "license": "MIT"
+}
