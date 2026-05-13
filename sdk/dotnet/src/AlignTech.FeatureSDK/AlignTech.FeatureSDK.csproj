@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.0</Version>
+    <Authors>AlignTech</Authors>
+    <Company>AlignTech</Company>
+    <Product>AlignTech Feature SDK</Product>
+    <Description>.NET SDK for AlignTech Feature Management Service</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>feature-flags;feature-management;toggles</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>
